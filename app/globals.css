@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-bg: #0a0c10;
+  --color-panel: #0f1218;
+  --color-fg: #c9cbd1;
+  --color-dim: #6b7280;
+  --color-lime: #c6e355;
+  --color-sky: #0ea5e9;
+  --color-teal: #14b8a6;
+  --color-slate: #4b5165;
+  --color-amber: #f59e0b;
+  --color-red: #f87171;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  overscroll-behavior: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.18) 2px 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 51;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.glow-lime {
+  color: var(--color-lime);
+  text-shadow: 0 0 12px rgba(198, 227, 85, 0.45);
+}
+.glow-sky {
+  color: var(--color-sky);
+  text-shadow: 0 0 12px rgba(14, 165, 233, 0.45);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.line {
+  animation: rise 160ms ease-out both;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--color-lime);
+  box-shadow: 0 0 8px rgba(198, 227, 85, 0.7);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.86; }
+  94% { opacity: 1; }
+}
+.crt {
+  animation: flicker 9s infinite;
+}
+
+@keyframes bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.bar {
+  display: inline-block;
+  height: 0.55em;
+  transform-origin: left;
+  background: var(--color-lime);
+  box-shadow: 0 0 8px rgba(198, 227, 85, 0.6);
+  animation: bar 700ms ease-out both;
+}
+
+.cmd {
+  color: var(--color-lime);
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.cmd:hover {
+  background: rgba(198, 227, 85, 0.12);
+}
+
+a {
+  color: var(--color-sky);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+a:hover {
+  background: rgba(14, 165, 233, 0.12);
+}
+
+::selection {
+  background: rgba(198, 227, 85, 0.3);
+}
