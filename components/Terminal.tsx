@@ -197,6 +197,14 @@ export default function Terminal() {
             </div>
           )}
         </div>
+        <footer className="flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-2 border-t border-slate/60 text-xs text-dim select-none">
+          <a href={`mailto:${p.email}`}>{p.email}</a>
+          <a href={p.links.github} target="_blank" rel="noreferrer">github</a>
+          <a href={p.links.linkedin} target="_blank" rel="noreferrer">linkedin</a>
+          <span className="cmd" onClick={() => void exec("help")}>more</span>
+          <span className="cmd" onClick={() => void exec("imprint")}>imprint</span>
+          <span className="ml-auto hidden sm:inline">© {new Date().getFullYear()} {p.name}</span>
+        </footer>
       </div>
     </main>
   );

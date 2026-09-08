@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key -- every Line is keyed by Terminal when rendered */
 import type { ReactNode } from "react";
-import { profile as p, kivo, empa } from "@/lib/profile";
+import { profile as p, kivo, empa, imprint } from "@/lib/profile";
 
 export type Line = ReactNode;
 export type Run = (cmd: string) => void;
@@ -37,6 +37,7 @@ export function idCard(run: Run): Line[] {
     ["building", <><H lime>KIVO</H> {dim("→")} <A href={p.links.kivo}>kivo.eco</A> {dim("· run")} <Cmd c="kivo" run={run} /></>],
     ["company", <><H>EMPA</H> {dim("→")} <A href={p.links.empa}>empa.co</A> {dim("· run")} <Cmd c="empa" run={run} /></>],
     ["location", p.location],
+    ["email", <A href={`mailto:${p.email}`}>{p.email}</A>],
     ["education", "M.Sc. Frankfurt School · Data & Business Analytics"],
     ["languages", p.languages],
     ["linkedin", <A href={p.links.linkedin}>linkedin.com/in/yannickaaron</A>],
@@ -89,7 +90,7 @@ export function help(run: Run): Line[] {
   );
   return [
     <span className="text-lime font-bold">available commands</span>,
-    c("kivo", "what I am building right now"),
+    c("kivo", "what I am building right now · kivo problem|flow|ai|europe|stack"),
     c("empa", "the consulting firm I cofounded"),
     c("about", "who is this guy"),
     c("cv", "work experience"),
@@ -97,12 +98,105 @@ export function help(run: Run): Line[] {
     c("skills", "toolbox"),
     c("projects", "public repos"),
     c("contact", "get in touch"),
+    c("imprint", "legal notice / impressum"),
     c("neofetch", "the login card again"),
     c("ls", "list files · cat <file> reads one"),
     c("clear", "wipe the screen"),
     "",
     dim("  tab completes · ↑↓ history · click any underlined command"),
   ];
+}
+
+const KIVO_LOGO = [
+  " _  _____ _   _  ___  ",
+  "| |/ /_ _| | | |/ _ \\ ",
+  "| ' / | || | | | | | |",
+  "| . \\ | || |_| | |_| |",
+  "|_|\\_\\___|\\___/ \\___/ ",
+];
+
+const KIVO_FLOW = [
+  "  1 hour logged once ............ who · project · contract · billable?",
+  "        |",
+  "        +--> client sign-off ---> sealed timesheet --+",
+  "        +--> billable value ------------------------+--> invoice --> cash flow forecast",
+  "        +--> internal cost ---> project margin       |",
+  "        +--> capacity plan --------------------------+",
+];
+
+const KIVO_EU = [
+  "  browser / desktop",
+  "        |",
+  "  [ KIVO app  Next.js · tRPC · Docker ]",
+  "        |                 \\",
+  "  [ PostgreSQL ]   [ object storage ]   <-- Scaleway fr-par, one KMS key per company",
+  "        |",
+  "  [ European AI models ]                x  AWS · Azure · GCP · US LLM APIs: not here",
+];
+
+function kivoCmd(sub: string, runCmd: Run): Line[] {
+  const nav = (
+    <>
+      {dim("more: ")}
+      {["problem", "flow", "ai", "europe", "stack"].map((s) => (
+        <span key={s} className="mr-3"><Cmd c={`kivo ${s}`} run={runCmd} /></span>
+      ))}
+      <A href={kivo.url}>kivo.eco</A>
+    </>
+  );
+  const pre = (rows: string[]) => rows.map((r) => <span className="text-lime">{r}</span>);
+  switch (sub) {
+    case "problem":
+      return box("KIVO · the problem", true, [...kivo.problem.map((x) => <>{"• "}{x}</>), "", <span className="font-bold">{kivo.why}</span>, "", nav]);
+    case "flow":
+      return box("KIVO · data captured once, everything derives", true, [
+        "Log one hour. Sign-off, billing, cost, capacity, invoice, margin and forecast all follow from that single capture.",
+        "",
+        ...pre(KIVO_FLOW),
+        "",
+        "A vacation request arrives with its consequences already calculated: cost, project plan, billing risk.",
+        "",
+        nav,
+      ]);
+    case "ai":
+      return box("KIVO · approach to AI", true, [...kivo.ai.map((x) => <>{"• "}{x}</>), "", nav]);
+    case "europe":
+    case "eu":
+      return box("KIVO · Europe first", true, [...kivo.europe.map((x) => <>{"• "}{x}</>), "", ...pre(KIVO_EU), "", nav]);
+    case "stack":
+      return box("KIVO · stack & status", true, [
+        <>{dim("stack    ")}{kivo.stack}</>,
+        <>{dim("modules  ")}{kivo.modules.join(" · ")}</>,
+        <>{dim("built    ")}<span className="bar w-36" />{" 3 years, inside EMPA"}</>,
+        <>{dim("live     ")}<span className="bar w-24" />{" 2 customers in production"}</>,
+        <>{dim("origin   ")}{"ran EMPA itself on it before the first external customer"}</>,
+        "",
+        nav,
+      ]);
+    default:
+      return [
+        ...pre(KIVO_LOGO),
+        <span className="glow-lime font-bold">{kivo.pitch}</span>,
+        "",
+        ...box("what it is", true, [
+          "Not an ERP. One holistic system for running a whole business, instead of one more tool next to the others.",
+          "Finished processes, not an empty shell: import your data on day one, start working, trust the processes.",
+          "No consultants, no technical setup, no separate automation layer bolted on.",
+          "Standard cases run by themselves. The system speaks up only when something is out of the ordinary or a decision is needed.",
+        ]),
+        "",
+        ...box("in numbers", true, [
+          <>{dim("3 years  ")}<span className="bar w-48" />{" built inside EMPA"}</>,
+          <>{dim("2 live   ")}<span className="bar w-32" />{" customers in production"}</>,
+          <>{dim("100% EU  ")}<span className="bar w-64" />{" infrastructure, AI models, keys"}</>,
+          <>{dim("0        ")}{"American cloud services underneath"}</>,
+        ]),
+        "",
+        <>{dim("status ")}{kivo.status}</>,
+        "",
+        nav,
+      ];
+  }
 }
 
 export function run(input: string, runCmd: Run): Line[] | "clear" {
@@ -144,21 +238,7 @@ export function run(input: string, runCmd: Run): Line[] | "clear" {
         return [dim(`→ ${u}`)];
       }
     case "kivo":
-      return box("KIVO · currently building", true, [
-        <span className="font-bold">{kivo.pitch}</span>,
-        "",
-        ...kivo.points.map((x) => <>{"• "}{x}</>),
-        "",
-        <>
-          {dim("flow   ")}
-          <span className="text-lime">1 hour logged once</span>
-          {dim(" → ")}sign-off{dim(" · ")}billable{dim(" · ")}cost{dim(" · ")}capacity
-          {dim(" → ")}invoice{dim(" · ")}margin{dim(" · ")}cash flow forecast
-        </>,
-        <>{dim("stack  ")}{kivo.stack}</>,
-        <>{dim("status ")}{kivo.status}</>,
-        <>{dim("url    ")}<A href={kivo.url}>kivo.eco</A>{"  "}<Cmd c="open kivo" run={runCmd} /></>,
-      ]);
+      return kivoCmd(arg, runCmd);
     case "empa":
       return box("EMPA · cofounder & director ejecutivo", false, [
         <span className="font-bold">{empa.pitch}</span>,
@@ -242,10 +322,24 @@ export function run(input: string, runCmd: Run): Line[] | "clear" {
         "If you are wrestling with data governance, an AI project that stalled on messy data,",
         "or a company drowning in the administration between its tools, that is my favourite kind of conversation.",
         "",
+        <>{dim("email     ")}<A href={`mailto:${p.email}`}>{p.email}</A></>,
         <>{dim("linkedin  ")}<A href={p.links.linkedin}>linkedin.com/in/yannickaaron</A></>,
         <>{dim("github    ")}<A href={p.links.github}>github.com/YannickAaron</A></>,
         <>{dim("empa      ")}<A href={p.links.empa}>empa.co</A></>,
         <>{dim("kivo      ")}<A href={p.links.kivo}>kivo.eco</A></>,
+      ];
+    case "imprint":
+    case "impressum":
+    case "legal":
+      return [
+        <span className="text-sky font-bold">Imprint / Impressum / Aviso legal</span>,
+        imprint.company,
+        imprint.person,
+        ...imprint.address,
+        <>{dim("email  ")}<A href={`mailto:${imprint.email}`}>{imprint.email}</A></>,
+        <>{dim("web    ")}<A href={p.links.empa}>empa.co</A></>,
+        "",
+        dim(imprint.note),
       ];
     case "pwd":
       return ["/home/yannick"];
@@ -273,6 +367,6 @@ export function run(input: string, runCmd: Run): Line[] | "clear" {
 
 export const COMMANDS = [
   "help", "kivo", "empa", "about", "cv", "education", "skills", "projects", "contact",
-  "neofetch", "ls", "cat", "open", "clear", "whoami", "pwd", "date", "echo", "exit",
+  "neofetch", "imprint", "ls", "cat", "open", "clear", "whoami", "pwd", "date", "echo", "exit",
 ];
-export const COMPLETIONS = [...COMMANDS, ...FILES.map((f) => `cat ${f}`), "open kivo", "open empa", "open linkedin", "open github"];
+export const COMPLETIONS = [...COMMANDS, "kivo problem", "kivo flow", "kivo ai", "kivo europe", "kivo stack", ...FILES.map((f) => `cat ${f}`), "open kivo", "open empa", "open linkedin", "open github"];

@@ -7,6 +7,7 @@ export const profile = {
   tagline:
     "Data scientist turned full stack builder. I design data platforms, ship the software that runs on them, and use AI where it actually pays off, not where it merely demos well.",
   location: "Valencia, Spain 🇪🇸",
+  email: "yannick@empa.co",
   languages: "Deutsch (native) · English · Español",
   links: {
     linkedin: "https://www.linkedin.com/in/yannickaaron/",
@@ -117,6 +118,32 @@ export const kivo = {
   ],
   status: "Built inside EMPA, three years in, two customers in production. Nothing vibe coded overnight.",
   stack: "Next.js · tRPC · Prisma · PostgreSQL · Docker · Scaleway fr-par",
+  problem: [
+    "Companies run on a pile of separate systems: leads here, projects there, documents, devices, HR, contracts somewhere else.",
+    "Even companies that own an ERP keep a constellation of extra tools around it.",
+    "People spend their days carrying information from system A to system B, cross checking, consolidating, preparing it for someone else.",
+    "What comes out is usually already out of date, and rarely the right information at the right moment.",
+  ],
+  modules: ["leads & CRM", "projects & time", "contracts (employees, freelancers, clients)", "vacation & sick leave", "expenses & receipts", "devices", "invoicing", "cash flow forecast"],
+  ai: [
+    "Deterministic by default. Most business processes are deterministic, so they are solved that way. No AI spam.",
+    "Receipts are read and validated in the background: missing VAT number or wrong recipient is flagged to the employee immediately.",
+    "KIVO is the foundation the next AI needs: strong API, all data in one system, semantic meaning attached. No data lake project first.",
+  ],
+  europe: [
+    "100% European infrastructure on Scaleway (fr-par). No American services underneath.",
+    "European AI models. Prompts never leave the EU.",
+    "One KMS key per company, tenant_id on every row, tenant scoped storage prefixes, encryption throughout.",
+  ],
+  why: "Automation projects fail for a boring reason: they automate an inefficient process instead of fixing it. KIVO brings the process with it, so the automation lives inside the process, not on top of it.",
+};
+
+export const imprint = {
+  company: "EMPA Consulting SPAIN S.L.",
+  person: "Yannick Aaron Lehr, Director Ejecutivo",
+  address: ["Valencia, Spain"], // TODO: street, postal code, CIF
+  email: "yannick@empa.co",
+  note: "Personal website. No tracking, no cookies, no analytics. Views are my own.",
 };
 
 export const empa = {
