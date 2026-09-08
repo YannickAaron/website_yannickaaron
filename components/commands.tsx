@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key -- every Line is keyed by Terminal when rendered */
 import type { ReactNode } from "react";
-import { profile as p, kivo, empa, imprint } from "@/lib/profile";
+import { profile as p, kivo, empa, imprint, FACE } from "@/lib/profile";
 
 export type Line = ReactNode;
 export type Run = (cmd: string) => void;
@@ -92,7 +92,7 @@ export function help(run: Run): Line[] {
     <span className="text-lime font-bold">available commands</span>,
     c("kivo", "what I am building right now · kivo problem|flow|ai|europe|stack"),
     c("empa", "the consulting firm I cofounded"),
-    c("about", "who is this guy"),
+    c("about", "who is this guy (with face)"),
     c("cv", "work experience"),
     c("education", "degrees, theses, certificates"),
     c("skills", "toolbox"),
@@ -106,6 +106,13 @@ export function help(run: Run): Line[] {
     dim("  tab completes · ↑↓ history · click any underlined command"),
   ];
 }
+
+const CV_TIMELINE = [
+  "2014        2018        2021        2022        2023        now",
+  "  |-----------|-----------|-----------|-----------|-----------|>",
+  "  apprentice  freelance   ioki (DB)   Workever    EMPA        KIVO",
+  "  sysadmin    consultant  data sci    cofounder   cofounder   shipping",
+];
 
 const KIVO_LOGO = [
   " _  _____ _   _  ___  ",
@@ -250,25 +257,28 @@ export function run(input: string, runCmd: Run): Line[] | "clear" {
       ]);
     case "about":
     case "bio":
+    case "me":
       return [
-        <span className="text-lime font-bold">{p.name}</span>,
-        p.tagline,
-        "",
-        <>
-          {"What I actually do"}
-        </>,
-        <>{dim("Data Strategy  -->  ")}Governance, data models, AI readiness for large organisations</>,
-        <>{dim("Engineering    -->  ")}TypeScript / Next.js / tRPC / Prisma / Postgres, from schema to shipped UI</>,
-        <>{dim("AI             -->  ")}LLM pipelines with eval harnesses, agents, document intelligence</>,
-        <>{dim("Analytics      -->  ")}Spatiotemporal forecasting, geodata, ML in production</>,
-        <>{dim("Business       -->  ")}Cofounder, P&L, hiring, and the unglamorous operations in between</>,
-        "",
-        <>{dim("based in ")}{p.location}{dim(" · ")}{p.languages}</>,
+        <div className="flex flex-col sm:flex-row gap-x-6 gap-y-3">
+          <pre className="glow-lime leading-[1.1] text-[0.8em] shrink-0">{FACE.join("\n")}</pre>
+          <div className="space-y-1">
+            <div className="text-lime font-bold">{p.name}</div>
+            <div>{p.tagline}</div>
+            <div className="pt-2">What I actually do</div>
+            <div>{dim("Data Strategy  -->  ")}Governance, data models, AI readiness for large organisations</div>
+            <div>{dim("Engineering    -->  ")}TypeScript / Next.js / tRPC / Prisma / Postgres, from schema to shipped UI</div>
+            <div>{dim("AI             -->  ")}LLM pipelines with eval harnesses, agents, document intelligence</div>
+            <div>{dim("Analytics      -->  ")}Spatiotemporal forecasting, geodata, ML in production</div>
+            <div>{dim("Business       -->  ")}Cofounder, P&L, hiring, and the unglamorous operations in between</div>
+            <div className="pt-2">{dim("based in ")}{p.location}{dim(" · ")}{p.languages}</div>
+            <div>{dim("off keyboard ")}3D printing with Klipper, and pretending Valencia weather is a productivity tool</div>
+          </div>
+        </div>,
       ];
     case "cv":
     case "experience":
     case "work":
-      return p.experience.flatMap((e, i) => [
+      return [...CV_TIMELINE.map((r) => <span className="text-lime">{r}</span>), "", ...p.experience.flatMap((e, i) => [
         <>
           <span className={i === 0 ? "glow-sky font-bold" : "text-sky font-bold"}>{e.role}</span>
           {dim(" @ ")}
@@ -277,7 +287,10 @@ export function run(input: string, runCmd: Run): Line[] | "clear" {
         <>{dim(`  ${e.years} · ${e.where}`)}</>,
         ...e.points.map((x) => <>{"  • "}{x}</>),
         "",
-      ]);
+      ]),
+      <>{dim("uptime   ")}{"since 2014 · 0 unplanned outages · coffee intake unmeasured"}</>,
+      <>{dim("next     ")}<Cmd c="kivo" run={runCmd} /></>,
+      ];
     case "education":
     case "edu":
       return [
