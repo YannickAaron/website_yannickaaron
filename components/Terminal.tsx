@@ -33,6 +33,8 @@ export default function Terminal() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const booted = useRef(false);
   const execRef = useRef<(c: string) => void>(() => {});
+  // ponytail: promise chain so a fast typist cannot interleave two commands' output
+  const queue = useRef<Promise<void>>(Promise.resolve());
 
   const push = useCallback((node: Line) => {
     setLines((l) => [...l, { id: idRef.current++, node }]);
@@ -48,7 +50,7 @@ export default function Terminal() {
     [push],
   );
 
-  const exec = useCallback(
+  const runOne = useCallback(
     async (raw: string) => {
       const cmd = raw.trim();
       push(
@@ -65,6 +67,15 @@ export default function Terminal() {
     },
     [push, pushMany],
   );
+
+  const exec = useCallback(
+    (raw: string) => {
+      queue.current = queue.current.then(() => runOne(raw));
+      return queue.current;
+    },
+    [runOne],
+  );
+
   useEffect(() => {
     execRef.current = (c) => void exec(c);
   }, [exec]);

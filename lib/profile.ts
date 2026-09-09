@@ -107,20 +107,24 @@ export const profile = {
 export const kivo = {
   name: "KIVO",
   url: "https://kivo.eco",
-  pitch: "A European business management platform built to run companies on one connected data foundation.",
+  pitch: "A Unified Business Platform built on one connected data foundation, shaped in Europe.",
+  // Official positioning statement. Keep verbatim, and keep everything else consistent with it.
+  statement:
+    "KIVO is a Unified Business Platform built on one connected data foundation, shaped in Europe around European business realities, values, and infrastructure. It provides a set of ready-to-use processes to run your business. Instead of creating information in separate systems, data is captured where it originates and immediately becomes part of the wider business context, creating a continuously updated foundation for automation and intelligent insights. This single source of truth enables the use of full context, supporting better decision-making and creating the foundation businesses need for an AI-driven future. KIVO supports service-based businesses today, with the next step to expand across industries and become the central operating system through which companies run, understand, and steer their organization.",
   points: [
-    "Not an ERP. One holistic system for running the whole business, instead of one more tool next to all the others.",
-    "Finished processes, not an empty shell. Operational on day one: import your data, start working, trust the processes.",
-    "Data is captured where it originates. No double entry, no carrying information from system A to system B.",
-    "Decisions arrive with their context: a vacation request shows cost, project impact and billing risk before anyone decides.",
-    "Deterministic by default. AI only where it earns its place, e.g. receipts read and validated in the background.",
-    "Europe first: 100% European infrastructure on Scaleway, European AI models, one KMS key per company, tenant isolation on every row.",
+    "A Unified Business Platform, not one more tool next to the others: one connected data foundation for the whole business.",
+    "Ready-to-use processes, not an empty shell. Operational on day one: import your data, start working, trust the processes.",
+    "Data is captured where it originates and immediately becomes part of the wider business context. No double entry, no carrying information from system A to system B.",
+    "A single source of truth means decisions carry their full context: a vacation request shows cost, project impact and billing risk before anyone decides.",
+    "A continuously updated foundation for automation and intelligent insights, and the foundation businesses need for an AI-driven future.",
+    "Shaped in Europe around European business realities, values, and infrastructure.",
   ],
   status: "Built inside EMPA, three years in, two customers in production. Nothing vibe coded overnight.",
+  today: "Supports service-based businesses today. Next step: expand across industries and become the central operating system through which companies run, understand, and steer their organization.",
   stack: "Next.js · tRPC · Prisma · PostgreSQL · Docker · Scaleway fr-par",
   problem: [
     "Companies run on a pile of separate systems: leads here, projects there, documents, devices, HR, contracts somewhere else.",
-    "Even companies that own an ERP keep a constellation of extra tools around it.",
+    "Even companies that already run a big system keep a constellation of extra tools around it.",
     "People spend their days carrying information from system A to system B, cross checking, consolidating, preparing it for someone else.",
     "What comes out is usually already out of date, and rarely the right information at the right moment.",
   ],
@@ -135,7 +139,7 @@ export const kivo = {
     "European AI models. Prompts never leave the EU.",
     "One KMS key per company, tenant_id on every row, tenant scoped storage prefixes, encryption throughout.",
   ],
-  why: "Automation projects fail for a boring reason: they automate an inefficient process instead of fixing it. KIVO brings the process with it, so the automation lives inside the process, not on top of it.",
+  why: "Automation projects fail for a boring reason: they automate an inefficient process instead of fixing it. KIVO brings ready-to-use processes with it, so the automation lives inside the process, not on top of it.",
 };
 
 export const imprint = {

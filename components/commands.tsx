@@ -172,6 +172,7 @@ function kivoCmd(sub: string, runCmd: Run): Line[] {
       return box("KIVO · Europe first", true, [...kivo.europe.map((x) => <>{"• "}{x}</>), "", ...pre(KIVO_EU), "", nav]);
     case "stack":
       return box("KIVO · stack & status", true, [
+        <>{dim("scope    ")}{kivo.today}</>,
         <>{dim("stack    ")}{kivo.stack}</>,
         <>{dim("modules  ")}{kivo.modules.join(" · ")}</>,
         <>{dim("built    ")}<span className="bar w-36" />{" 3 years, inside EMPA"}</>,
@@ -186,8 +187,8 @@ function kivoCmd(sub: string, runCmd: Run): Line[] {
         <span className="glow-lime font-bold">{kivo.pitch}</span>,
         "",
         ...box("what it is", true, [
-          "Not an ERP. One holistic system for running a whole business, instead of one more tool next to the others.",
-          "Finished processes, not an empty shell: import your data on day one, start working, trust the processes.",
+          kivo.statement,
+          "",
           "No consultants, no technical setup, no separate automation layer bolted on.",
           "Standard cases run by themselves. The system speaks up only when something is out of the ordinary or a decision is needed.",
         ]),
